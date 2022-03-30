@@ -1,0 +1,55 @@
+{
+    "name": "tobento/app-migration",
+    "type": "library",
+    "description": "App migration support.",
+    "keywords": [
+        "tobento",
+        "package",
+        "PHP",
+        "application",
+        "migration"
+    ],
+    "homepage": "https://www.tobento.ch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tobias Strub",
+            "email": "info@tobento.ch",
+            "homepage": "https://www.tobento.ch"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.0",
+        "psr/container": "^2.0",
+        "tobento/app": "^1.0",
+        "tobento/service-migration": "^1.0",
+        "tobento/service-config": "^1.0",
+        "tobento/service-dir": "^1.0"
+    },
+    "suggest": {
+        "tobento/service-responser": "Support for render migration messages"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "vimeo/psalm": "^4.0",
+        "tobento/service-responser": "^1.0",
+        "tobento/service-filesystem": "^1.0",
+        "nyholm/psr7": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tobento\\App\\Migration\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tobento\\App\\Migration\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --testdox --colors=always",
+        "psalm": "vendor/bin/psalm"
+    }
+}
