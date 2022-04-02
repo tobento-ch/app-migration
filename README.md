@@ -7,9 +7,10 @@ App migration support.
 - [Getting Started](#getting-started)
     - [Requirements](#requirements)
 - [Documentation](#documentation)
-    - [Available Boots](#available-boots)
-        - [Migration Boot](#migration-boot)
-    - [Create Migration](#create-migration)
+    - [App](#app)
+    - [Migration Boot](#migration-boot)
+        - [Install and Uninstall Migration](#install-and-uninstall-migration)
+        - [Create Migration](#create-migration)
 - [Credits](#credits)
 ___
 
@@ -27,9 +28,13 @@ composer require tobento/app-migration
 
 # Documentation
 
-## Available Boots
+## App
 
-### Migration Boot
+Check out the [App Skeleton](https://github.com/tobento-ch/app-skeleton) if you are using the skeleton.
+
+You may also check out the [App](https://github.com/tobento-ch/app) to learn more about the app in general.
+
+## Migration Boot
 
 The migration boot does the following:
 
@@ -51,7 +56,7 @@ $app->boot(\Tobento\App\Migration\Boot\Migration::class);
 $app->run();
 ```
 
-**Install and Uninstall Migration**
+### Install and Uninstall Migration
 
 Once the [Migration Boot](#migration-boot) has been booted you may install migrations by the following ways:
 
@@ -83,7 +88,7 @@ class AnyServiceBoot extends Boot
 }
 ```
 
-## Create Migration
+### Create Migration
 
 Check out the [Migration Service](https://github.com/tobento-ch/service-migration) to learn more about creating migration classes.
 
