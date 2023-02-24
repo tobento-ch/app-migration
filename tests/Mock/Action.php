@@ -40,6 +40,17 @@ class Action implements ActionInterface
     {
         //
     }
+    
+
+    /**
+     * Returns a name of the action.
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
 
     /**
      * Returns a description of the action.
@@ -49,5 +60,15 @@ class Action implements ActionInterface
     public function description(): string
     {
         return $this->name;
+    }
+    
+    /**
+     * Returns the processed data information.
+     *
+     * @return array<array-key, string>
+     */
+    public function processedDataInfo(): array
+    {
+        return [];
     }
 }
