@@ -31,11 +31,13 @@ class MigrationTest extends TestCase
     {
         $dir = new Dir();
         $dir->delete(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/config/');
         
         $app = (new AppFactory())->createApp();
         
         $app->dirs()
-            ->dir(__DIR__.'/../app/', 'app')
+            ->dir(realpath(__DIR__.'/../app').'/', 'app')
             ->dir($app->dir('app').'config', 'config', group: 'config', priority: 10);
     
         $app->boot(\Tobento\App\Migration\Boot\Migration::class);
@@ -61,11 +63,13 @@ class MigrationTest extends TestCase
     {
         $dir = new Dir();
         $dir->delete(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/config/');        
         
         $app = (new AppFactory())->createApp();
         
         $app->dirs()
-            ->dir(__DIR__.'/../app/', 'app')
+            ->dir(realpath(__DIR__.'/../app').'/', 'app')
             ->dir($app->dir('app').'config', 'config', group: 'config', priority: 10);
     
         $app->boot(\Tobento\App\Migration\Boot\Migration::class);
@@ -92,11 +96,13 @@ class MigrationTest extends TestCase
     {
         $dir = new Dir();
         $dir->delete(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/config/');        
         
         $app = (new AppFactory())->createApp();
         
         $app->dirs()
-            ->dir(__DIR__.'/../app/', 'app')
+            ->dir(realpath(__DIR__.'/../app').'/', 'app')
             ->dir($app->dir('app').'config', 'config', group: 'config', priority: 10);
     
         $app->boot(\Tobento\App\Migration\Test\Mock\InstallService::class);
@@ -120,11 +126,13 @@ class MigrationTest extends TestCase
     {
         $dir = new Dir();
         $dir->delete(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/config/');        
         
         $app = (new AppFactory())->createApp();
         
         $app->dirs()
-            ->dir(__DIR__.'/../app/', 'app')
+            ->dir(realpath(__DIR__.'/../app').'/', 'app')
             ->dir($app->dir('app').'config', 'config', group: 'config', priority: 10);
         
         $app->boot(\Tobento\App\Migration\Test\Mock\InstallService::class);
@@ -149,11 +157,13 @@ class MigrationTest extends TestCase
     {
         $dir = new Dir();
         $dir->delete(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/config/');        
         
         $app = (new AppFactory())->createApp();
         
         $app->dirs()
-            ->dir(__DIR__.'/../app/', 'app')
+            ->dir(realpath(__DIR__.'/../app').'/', 'app')
             ->dir($app->dir('app').'config', 'config', group: 'config', priority: 10);
 
         $app->set(ResponserInterface::class, function() {
