@@ -41,7 +41,8 @@ class FooMigration implements MigrationInterface
     public function install(): ActionsInterface
     {            
         return new Actions(
-            new Action('config-install'),
+            new Action(name: 'config-install', type: 'config'),
+            new Action(name: 'view-install', type: 'views'),
         );
     }
 
@@ -53,7 +54,8 @@ class FooMigration implements MigrationInterface
     public function uninstall(): ActionsInterface
     {
         return new Actions(
-            new Action('config-uninstall'),
+            new Action(name: 'config-uninstall', type: 'config'),
+            new Action(name: 'view-uninstall', type: 'views'),
         );
     }
 }

@@ -24,10 +24,12 @@ class Action implements ActionInterface
     /**
      * Create a new Action
      *
-     * @param string $name,
+     * @param string $name
+     * @param string $type
      */    
     public function __construct(
         protected string $name,
+        protected string $type = '',
     ) {}
         
     /**
@@ -63,12 +65,22 @@ class Action implements ActionInterface
     }
     
     /**
+     * Returns the type of the action.
+     *
+     * @return string
+     */
+    public function type(): string
+    {
+        return $this->type;
+    }
+    
+    /**
      * Returns the processed data information.
      *
      * @return array<array-key, string>
      */
     public function processedDataInfo(): array
     {
-        return [];
+        return ['key' => 'name'];
     }
 }
