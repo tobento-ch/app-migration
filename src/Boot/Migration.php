@@ -17,6 +17,7 @@ use Tobento\App\Boot;
 use Tobento\Service\Migration\Migrator;
 use Tobento\Service\Migration\MigratorInterface;
 use Tobento\Service\Migration\MigrationInterface;
+use Tobento\Service\Migration\MigrationFactoryInterface;
 use Tobento\Service\Migration\AutowiringMigrationFactory;
 use Tobento\Service\Migration\MigrationJsonFileRepository;
 use Tobento\Service\Migration\MigrationResults;
@@ -27,6 +28,7 @@ use Tobento\Service\Config\ConfigInterface;
 use Tobento\Service\Config\PhpLoader;
 use Tobento\Service\Config\ConfigLoadException;
 use Tobento\Service\Responser\ResponserInterface;
+use Tobento\Service\Console\ConsoleInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -64,10 +66,12 @@ class Migration extends Boot
      */
     public function boot(): void
     {
+        $this->app->set(MigrationFactoryInterface::class, AutowiringMigrationFactory::class);
+        
         // Migrator implementation.
-        $this->app->set(MigratorInterface::class, function(ContainerInterface $container) {
+        $this->app->set(MigratorInterface::class, function() {
             return new Migrator(
-                new AutowiringMigrationFactory($container),
+                $this->app->get(MigrationFactoryInterface::class),
                 new MigrationJsonFileRepository($this->app->dir('app').'migrations/'),
             );
         });
@@ -107,7 +111,13 @@ class Migration extends Boot
                     );
                 }                 
             });
-        }        
+        }
+        
+        // console commands:
+        $this->app->on(ConsoleInterface::class, function(ConsoleInterface $console): void {
+            $console->addCommand(\Tobento\App\Migration\Console\MigrationListCommand::class);
+            $console->addCommand(\Tobento\App\Migration\Console\MigrationInstallCommand::class);
+        });
     }
     
     /**
