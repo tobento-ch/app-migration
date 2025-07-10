@@ -60,6 +60,11 @@ class Migration extends Boot
     protected bool $showMigrationMessages = false;
     
     /**
+     * @var array
+     */
+    protected array $replaces = [];
+    
+    /**
      * Boot application services.
      *
      * @return void
@@ -103,13 +108,12 @@ class Migration extends Boot
 
             $this->app->on(ResponserInterface::class, function(ResponserInterface $responser) {
 
-                foreach($this->app->get(MigrationResultsInterface::class)->all() as $result)
-                {
+                foreach($this->app->get(MigrationResultsInterface::class)->all() as $result) {
                     $responser->messages()->add(
                         level: 'success',
                         message: 'Successfully installed: '.$result->migration()->description(),
                     );
-                }                 
+                }
             });
         }
         
@@ -136,6 +140,17 @@ class Migration extends Boot
         $migrator = $this->app->get(MigratorInterface::class);
         
         $migrationClass = is_string($migration) ? $migration : $migration::class;
+        
+        // Check for replaces:
+        if (!empty($this->replaces) && array_key_exists($migrationClass, $this->replaces)) {
+            if (is_null($this->replaces[$migrationClass])) {
+                return;
+            }
+            
+            $migration = $this->replaces[$migrationClass];
+            $migrationClass = is_string($migration) ? $migration : $migration::class;
+            unset($this->replaces[$migrationClass]);
+        }
         
         if ($migrator->isInstalled($migrationClass)) {
             return;
@@ -174,5 +189,17 @@ class Migration extends Boot
         $result = $migrator->uninstall($migration);
         
         $this->app->get(MigrationResultsInterface::class)->add($result);
+    }
+    
+    /**
+     * Add a migration to replace.
+     *
+     * @param string $migration
+     * @param string|MigrationInterface $withMigration
+     * @return void
+     */
+    public function replace(string $migration, null|string|MigrationInterface $withMigration): void
+    {
+        $this->replaces[$migration] = $withMigration;
     }
 }
