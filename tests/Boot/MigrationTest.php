@@ -192,5 +192,42 @@ class MigrationTest extends TestCase
         
         $dir = new Dir();
         $dir->delete(__DIR__.'/../app/');
-    }    
+    }
+    
+    public function testReplaceMigration()
+    {
+        $dir = new Dir();
+        $dir->delete(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/config/');        
+        
+        $app = (new AppFactory())->createApp();
+        
+        $app->dirs()
+            ->dir(realpath(__DIR__.'/../app').'/', 'app')
+            ->dir($app->dir('app').'config', 'config', group: 'config', priority: 10);
+                
+        $app->booting();
+        
+        $migration = $app->get(\Tobento\App\Migration\Boot\Migration::class);
+        
+        $migration->replace(
+            \Tobento\App\Migration\Test\Mock\FooMigration::class,
+            \Tobento\App\Migration\Test\Mock\BarMigration::class
+        );
+        
+        $app->boot(\Tobento\App\Migration\Test\Mock\InstallService::class);
+        
+        $app->booting();
+        
+        $result = $app->get(MigrationResultsInterface::class)->all()[1];
+        
+        $this->assertSame(
+            \Tobento\App\Migration\Test\Mock\BarMigration::class,
+            $result->migration()::class
+        );
+        
+        $dir = new Dir();
+        $dir->delete(__DIR__.'/../app/');
+    }
 }
