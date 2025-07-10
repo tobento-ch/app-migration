@@ -11,6 +11,7 @@ App migration support.
     - [Migration Boot](#migration-boot)
         - [Install and Uninstall Migration](#install-and-uninstall-migration)
         - [Create Migration](#create-migration)
+        - [Replace Migration](#replace-migration)
     - [Console](#console)
         - [Migration List Command](#migration-list-command)
         - [Migration Install Command](#migration-install-command)
@@ -95,6 +96,31 @@ class AnyServiceBoot extends Boot
 ### Create Migration
 
 Check out the [Migration Service](https://github.com/tobento-ch/service-migration) to learn more about creating migration classes.
+
+### Replace Migration
+
+You may replace a migration with another migration using the ```replace``` method:
+
+```php
+use Tobento\App\Boot;
+use Tobento\App\Migration\Boot\Migration;
+
+class AnyServiceBoot extends Boot
+{
+    public const BOOT = [
+        // you may ensure the migration boot.
+        Migration::class,
+    ];
+    
+    public function boot(Migration $migration)
+    {
+        $migration->replace(
+            SomeMigration::class,
+            ReplaceWithThisMigration::class
+        );
+    }
+}
+```
 
 ## Console
 
