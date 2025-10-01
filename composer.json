@@ -1,6 +1,6 @@
 {
     "name": "tobento/app-migration",
-    "version": "2.0",
+    "version": "2",
     "type": "library",
     "description": "App migration support.",
     "keywords": [
