@@ -121,6 +121,7 @@ class Migration extends Boot
         $this->app->on(ConsoleInterface::class, function(ConsoleInterface $console): void {
             $console->addCommand(\Tobento\App\Migration\Console\MigrationListCommand::class);
             $console->addCommand(\Tobento\App\Migration\Console\MigrationInstallCommand::class);
+            $console->addCommand(\Tobento\App\Migration\Console\MigrationUninstallCommand::class);
         });
     }
     
