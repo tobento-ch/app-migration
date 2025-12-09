@@ -18,6 +18,7 @@ use Tobento\App\AppFactory;
 use Tobento\Service\Migration\MigrationResultsInterface;
 use Tobento\Service\Filesystem\Dir;
 use Tobento\App\Migration\Test\Mock\FooMigration;
+use Tobento\Service\Console\ConsoleInterface;
 use Tobento\Service\Responser\Responser;
 use Tobento\Service\Responser\ResponserInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -226,6 +227,33 @@ class MigrationTest extends TestCase
             \Tobento\App\Migration\Test\Mock\BarMigration::class,
             $result->migration()::class
         );
+        
+        $dir = new Dir();
+        $dir->delete(__DIR__.'/../app/');
+    }
+    
+    public function testConsoleCommandsAreAvailable()
+    {
+        $dir = new Dir();
+        $dir->delete(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/');
+        $dir->create(__DIR__.'/../app/config/');        
+        
+        $app = (new AppFactory())->createApp();
+        
+        $app->dirs()
+            ->dir(realpath(__DIR__.'/..').'/', 'root')
+            ->dir(realpath(__DIR__.'/../app').'/', 'app')
+            ->dir($app->dir('app').'config', 'config', group: 'config', priority: 10);
+        
+        $app->boot(\Tobento\App\Migration\Boot\Migration::class);
+        $app->boot(\Tobento\App\Console\Boot\Console::class);
+        $app->booting();
+        
+        $console = $app->get(ConsoleInterface::class);
+        $this->assertTrue($console->hasCommand('migration:list'));
+        $this->assertTrue($console->hasCommand('migration:install'));
+        $this->assertTrue($console->hasCommand('migration:uninstall'));
         
         $dir = new Dir();
         $dir->delete(__DIR__.'/../app/');
